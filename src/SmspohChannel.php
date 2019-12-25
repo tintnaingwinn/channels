@@ -22,7 +22,7 @@ class SmspohChannel
     protected $sender;
 
     /**
-     * @var integer
+     * @var int
      * The message body content count should be no longer than 6 message parts(918).
      */
     protected $character_limit_count = 918;
