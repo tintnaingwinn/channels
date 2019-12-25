@@ -8,7 +8,7 @@ use GuzzleHttp\Exception\ClientException;
 class CouldNotSendNotification extends Exception
 {
     /**
-     * Thrown when content length is greater than 160 characters.
+     * Thrown when content length is greater than 918 characters.
      *
      * @return static
      */

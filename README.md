@@ -89,9 +89,9 @@ Notification::route('smspoh', '5555555555')
 
 `sender()`: Sets the sender's name.
 
-`content()`: Set a content of the notification message.
+`content()`: Set a content of the notification message. This parameter should be no longer than 918 char(6 message parts),
 
-`test()`: Send a test message to specific mobile number or not.
+`test()`: Send a test message to specific mobile number or not. This parameter should be boolean(1 or 0).
 
 *Make sure to register the sender name at you SmsPoh dashboard.*
 ## Changelog

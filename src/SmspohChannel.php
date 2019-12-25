@@ -21,6 +21,12 @@ class SmspohChannel
      */
     protected $sender;
 
+    /**
+     * @var integer
+     * The message body content count should be no longer than 6 message parts(918).
+     */
+    protected $character_limit_count = 918;
+
     public function __construct(SmspohApi $smspoh, $sender)
     {
         $this->smspoh = $smspoh;
@@ -48,8 +54,8 @@ class SmspohChannel
             $message = new SmspohMessage($message);
         }
 
-        if (mb_strlen($message->content) > 160) {
-            throw CouldNotSendNotification::contentLengthLimitExceeded(160);
+        if (mb_strlen($message->content) > $this->character_limit_count) {
+            throw CouldNotSendNotification::contentLengthLimitExceeded($this->character_limit_count);
         }
 
         return $this->smspoh->send([

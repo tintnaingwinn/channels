@@ -53,11 +53,11 @@ class SmspohChannelTest extends TestCase
     }
 
     /** @test */
-    public function it_can_check_content_length_limit(): void
+    public function it_can_check_long_content_length(): void
     {
         $this->withoutExceptionHandling();
 
-        $character_count = 160;
+        $character_count = 918;
 
         $channel = new SmspohChannel(new SmspohApi(), '4444444444');
 
@@ -66,6 +66,16 @@ class SmspohChannelTest extends TestCase
         $this->expectExceptionMessage("Notification was not sent. Content length may not be greater than {$character_count} characters.");
 
         $channel->send(new TestNotifiable(), new TestNotificationTooLongMessage());
+    }
+
+    /** @test */
+    public function it_can_check_limit_count_content(): void
+    {
+        $channel = new SmspohChannel($smspoh = m::mock(SmspohApi::class), '4444444444');
+
+        $smspoh->shouldReceive('send')->once();
+
+        $channel->send(new TestNotifiable(), new TestNotificationLimitCountMessage());
     }
 }
 
@@ -101,7 +111,15 @@ class TestNotificationTooLongMessage extends Notification
 {
     public function toSmspoh($notifiable)
     {
-        return (new SmspohMessage('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'))->sender('5554443333');
+        return (new SmspohMessage('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.'))->sender('5554443333');
+    }
+}
+
+class TestNotificationLimitCountMessage extends Notification
+{
+    public function toSmspoh($notifiable)
+    {
+        return (new SmspohMessage('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amete.'))->sender('5554443333');
     }
 }
 
